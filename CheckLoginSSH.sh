@@ -31,7 +31,6 @@ presentation() {
 GetIPsSSH() {
         local ruta=$1
         ssh_net=$(cat "$ruta" | grep -E "Failed password|Invalid user" | grep -oP 'from \K[^ ]+(?= port)')
-        #ssh_net=$(echo "$ssh_logs" | grep "authentication failure" | grep -oP 'from \K[^ ]+(?= port)')
         echo "$ssh_net"
 }
 
