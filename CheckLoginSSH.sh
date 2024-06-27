@@ -118,4 +118,6 @@ main() {
         done
 }
 
+#When the script is executed, it's mandatory to pass the file rute.
+#EX: ./script_ssh.sh /var/log/auth.log.1
 main "$1"
