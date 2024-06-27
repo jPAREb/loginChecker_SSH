@@ -8,7 +8,7 @@ GetCountry() {
                 --data-urlencode "ipAddress=$1" \
                 -d maxAgeInDays=90 \
                 -d verbose \
-                -H "Key: 36a7b5793fad3fe71ef45b9b9e155d68c8f4fe02166f39e1c4e06acbd85df8a5c6c3d0077039e8a5" \
+                -H "Key: <yourKey>" \
                 -H "Accept: application/json")
         pais=$(echo "$resposta" | jq -r '.data.countryName')
         echo $pais
