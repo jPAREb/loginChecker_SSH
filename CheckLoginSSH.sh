@@ -1,37 +1,41 @@
 #! /bin/bash
+
 echo "The script is going to initialize"
 echo "Feel Free to visit https://jordipare.com"
+
 GetCountry() {
         local ip=$1
         resposta=$(curl -s -G https://api.abuseipdb.com/api/v2/check \
                 --data-urlencode "ipAddress=$1" \
                 -d maxAgeInDays=90 \
                 -d verbose \
-                -H "Key: YOUR_KEY" \
+                -H "Key: 36a7b5793fad3fe71ef45b9b9e155d68c8f4fe02166f39e1c4e06acbd85df8a5c6c3d0077039e8a5" \
                 -H "Accept: application/json")
         pais=$(echo "$resposta" | jq -r '.data.countryName')
         echo $pais
 }
+
 presentation() {
         echo "*****************************"
         echo "*                           *"
         echo "*    Welcome to my script   *"
         echo "*                           *"
         echo "*****************************"
-        echo
-        echo "Feel free to visit my website:"
-        echo "https://jordipare.com"
-        echo
+        echo "*    Feel free to visit:    *"
+        echo "*   https://jordipare.com   *"
+        echo "*****************************"
 }
 
 GetIPsSSH() {
-        ssh_net=$(cat /var/log/auth_1.log | grep -E "Failed password|Invalid user" | grep -oP 'from \K[^ ]+(?= port)')
+        local ruta=$1
+        ssh_net=$(cat "$ruta" | grep -E "Failed password|Invalid user" | grep -oP 'from \K[^ ]+(?= port)')
         #ssh_net=$(echo "$ssh_logs" | grep "authentication failure" | grep -oP 'from \K[^ ]+(?= port)')
         echo "$ssh_net"
 }
 
 GetIPsSSHxTowo() {
-        ssh_net=$(cat /var/log/auth.log | grep -E ": message repeated 2 times:" | grep -oP 'from \K[^ ]+(?= port)')
+        local ruta=$1
+        ssh_net=$(cat "$ruta" | grep -E ": message repeated 2 times:" | grep -oP 'from \K[^ ]+(?= port)')
         echo "$ssh_net"
 }
 
@@ -56,6 +60,7 @@ EOF
 
 AddCount() {
         local ip=$1
+
         count_str=$(sqlite3 ips.db "select count from connexions where ip like '$1'")
         count=$count_str
         count=$((count + 1))
@@ -65,20 +70,21 @@ EOF
 }
 
 main() {
-        # Banner
+        entrada=$1
+        #Banner
         echo "$(presentation)"
+        echo "The file that's going to be read is: $entrada"
+        #Extract IP's that tryied to log in (ssh)
 
-        # Extract IP's that tryied to log in (ssh)
-
-        mapfile -t IPs < <(GetIPsSSH)
-        mapfile -t IPsx2 < <(GetIPsSSHxTowo)
+        mapfile -t IPs < <(GetIPsSSH "$entrada")
+        mapfile -t IPsx2 < <(GetIPsSSHxTowo "$entrada")
 
         for IP in "${IPs[@]}"; do
                 if [ "$(CheckDB "$IP")" = "1" ]; then
-                        echo "L'IP $IP no està afegida"
+                        echo "[New IP] $IP has been added to DB"
                         AddNewIP "$IP"
                 elif [ "$(CheckDB "$IP")" = "2" ] && [ -n "$IP" ]; then
-                        echo "L'IP $IP existeix"
+                        #echo "L'IP $IP existeix"
                         AddCount "$IP"
                 fi
         done
@@ -89,4 +95,5 @@ main() {
 
         done
 }
-main
+
+main "$1"
