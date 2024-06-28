@@ -5,10 +5,12 @@ DB_NAME="ips.db"
 
 # Comandes SQL per crear una taula
 SQL_COMMANDS="
-CREATE TABLE IF NOT EXISTS connexions (
+CREATE TABLE IF NOT EXISTS connections (
     ip TEXT PRIMARY KEY,
     pais TEXT,
-    count INTEGER
+    count INTEGER,
+    reported INTEGER NOT NULL DEFAULT 0,
+    date TEXT
 );
 
 # Crear la base de dades i la taula
