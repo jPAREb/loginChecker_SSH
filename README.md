@@ -4,7 +4,7 @@ To deploy the database, you must install SQLite.
 Steps:
 1. chmod +x ./script_ssh.sh
 2. Scan
-   2.1. Run the first scan "./script_ssh.sh 'rute/auth.log'" (route example: "/var/log/auth.log.1")
+   <br>2.1. Run the first scan "./script_ssh.sh 'rute/auth.log'" (route example: "/var/log/auth.log.1")
 3. Report IPs
    3.1 Run "./script_ssh.sh report"
 
