@@ -1,4 +1,4 @@
-With this script, you will be able to detect every IP that failed to login the server with ssh, it queryes to AbuseIP to get the country, counts how many tryies did the attacker and this information is stored in a database.
+With this script, you will be able to detect every IP that failed to login the server with ssh, it queries to AbuseIP to get the country, counts how many tryies did the attacker and this information is stored in a database.
 <br><br>To deploy the database, you must install SQLite.
 
 Steps:
