@@ -135,7 +135,7 @@ main() {
         if [ "$entrada" = "report" ]; then
                 #report
                 ReportAbuseIP
-                echo "Report seleccionat"
+                echo "[Report] The script will report IPs from the database that have not been reported yet."
         else
                 echo "The file that's going to be read is: $entrada"
                 #Parse into array variable the IP's which failed user&password attemptps
